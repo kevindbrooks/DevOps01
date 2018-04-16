@@ -1,0 +1,5 @@
+cat info
+
+cats can run
+cats can hide
+cats can eat
