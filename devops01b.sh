@@ -5,64 +5,71 @@ volume_count=`df -h | grep "^/" | wc | awk '{print $1}'`
 volume_size=`df -h | grep "^/" | awk '{print $2}'`
 volume_free=`df -h | grep "^/" | awk '{print $4}'`
 
-echo "Please enter a paramater to check on this machine (volumes | cpu | ram | network | all)"
-while :
-do
-	read input_string
-	case $input_string in 
-		volumes)
-			echo "------------------------------------------------------------------------------------"
-			#echo "Volumes"
-			echo "There is $volume_count volume(s) ($volume_name) on this machine with $volume_size total space and $volume_free available space"
-			break
-			;;
-		cpu)
-			echo "------------------------------------------------------------------------------------"
-			#echo "Cpu"
-			lscpu | egrep "^CPU\(s):|Model name|Core|MHz"
-			break
-			;;
-		ram)
-			echo "------------------------------------------------------------------------------------"
-                        #echo "Ram"
-			free -m
-			break
-			;;
-		network)
-			echo "------------------------------------------------------------------------------------"
-                        #echo "Network"
-			ifconfig | head -2
-			break
-			;;
-		all)
-			echo "------------------------------------------------------------------------------------"
-                        #echo "All"
-			echo "Volumes"
-			echo "There is $volume_count volume(s) ($volume_name) on this machine with $volume_size total space and $volume_free available space"
-
-			echo "------------------------------------------------------------------------------------"
-			echo "CPU details"
-			lscpu | egrep "^CPU\(s):|Model name|Core|MHz"
-
-			echo "------------------------------------------------------------------------------------"
-			echo "Ram details"
-			free -m
-
-
-			echo "------------------------------------------------------------------------------------"
-			echo "Mac Address | IP Address"
-			ifconfig | head -2
-
-			echo "------------------------------------------------------------------------------------"
-
-			break
-			;;
-		*)
-			echo "Please provide correct parmater out of (volumes | cpu | ram | network | all) options"
-			break
-			;;
-	esac
-done
-
-
+echo "Please input Y for each system check you want to see or press enter to skip"
+########################################
+#read -p "Would you like to see ALL ? " name5
+read -p "Volumes ? " name1
+read -p "CPU ? " name2
+read -p "RAM ? " name3
+read -p "Network ? " name4
+read -p "ALL ? " name5
+echo ""
+########################################
+if [ "$name1" = "Y" ];
+then
+        echo "*****VOLUMES*****"
+                        echo "There is $volume_count volume(s) ($volume_name) on this machine with $volume_size total space and $volume_free available space"
+        echo ""
+else
+        echo "Volumes skipped"
+        break
+fi
+########################################
+if [ "$name2" = "Y" ];
+then
+        echo "*****CPU*****"
+        lscpu | egrep "^CPU\(s):Model name|Core|MHz"
+        echo ""
+else
+        echo "CPU skipped"
+	break
+fi
+########################################
+if [ "$name3" = "Y" ];
+then
+        echo "*****RAM*****"
+        free -m
+        echo ""
+else
+	echo "RAM skipped"
+        break
+fi
+########################################
+if [ "$name4" = "Y" ];
+then
+        echo "*****NETWORK*****"
+        ifconfig | head -2
+	echo ""
+else
+	echo "Network skipped"
+        break
+fi
+########################################
+if [ "$name5" = "Y" ];
+then
+        echo "*****VOLUMES*****"
+        echo "There is $volume_count volume(s) ($volume_name) on this machine with $volume_size total space and $volume_free available space"
+	echo ""
+        echo "*****CPU*****"
+        lscpu | egrep "^CPU\(s):Model name|Core|MHz"
+	echo ""
+        echo "*****RAM*****"
+        free -m
+	echo ""
+        echo "*****NETWORK*****"
+        ifconfig | head -2
+else
+        echo "ALL skipped"
+	break
+fi
 
